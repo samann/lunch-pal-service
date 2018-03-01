@@ -5,17 +5,17 @@
 
 	<groupId>com.droidwolf.lunchpal</groupId>
 	<artifactId>lunch-pal-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>lunch-pal-service</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A convenient way to find a place to eat</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
 	<properties>
