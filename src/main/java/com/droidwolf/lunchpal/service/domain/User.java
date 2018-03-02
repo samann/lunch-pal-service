@@ -1,15 +1,25 @@
 package com.droidwolf.lunchpal.service.domain;
 
-public class User {
+import java.io.Serializable;
+import java.util.UUID;
+
+public class User implements Serializable {
+    private final UUID id;
 
     private String name;
 
     public User(String name) {
+        this.id = UUID.randomUUID();
         this.name = name;
     }
 
     public User(User copy) {
+        this.id = copy.id;
         this.name = copy.name;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
