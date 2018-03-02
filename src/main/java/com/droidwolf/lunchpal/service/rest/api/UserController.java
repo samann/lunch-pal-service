@@ -1,6 +1,6 @@
 package com.droidwolf.lunchpal.service.rest.api;
 
-import domain.User;
+import com.droidwolf.lunchpal.service.domain.User;
 
 import java.util.List;
 

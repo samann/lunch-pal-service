@@ -1,4 +1,4 @@
-package domain;
+package com.droidwolf.lunchpal.service.domain;
 
 public class User {
 

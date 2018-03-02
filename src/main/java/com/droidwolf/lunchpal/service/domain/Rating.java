@@ -1,4 +1,4 @@
-package domain;
+package com.droidwolf.lunchpal.service.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

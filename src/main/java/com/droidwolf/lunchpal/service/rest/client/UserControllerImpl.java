@@ -1,7 +1,7 @@
 package com.droidwolf.lunchpal.service.rest.client;
 
 import com.droidwolf.lunchpal.service.rest.api.UserController;
-import domain.User;
+import com.droidwolf.lunchpal.service.domain.User;
 import io.netty.util.internal.ConcurrentSet;
 import org.springframework.web.bind.annotation.*;
 
