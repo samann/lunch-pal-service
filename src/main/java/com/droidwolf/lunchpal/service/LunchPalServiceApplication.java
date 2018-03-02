@@ -1,4 +1,4 @@
-package com.droidwolf.lunchpal.lunchpalservice;
+package com.droidwolf.lunchpal.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
