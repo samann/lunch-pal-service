@@ -1,5 +1,7 @@
 package com.droidwolf.lunchpal.service;
 
+import com.droidwolf.lunchpal.service.dao.GetUpdateDeleteDao;
+import com.droidwolf.lunchpal.service.dao.UserDao;
 import com.droidwolf.lunchpal.service.domain.User;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
@@ -30,7 +32,8 @@ public class HazelcastConfiguration {
     }
 
     @Bean
-    public IMap<UUID, User> userMap(HazelcastInstance hazelcastInstance) {
-        return hazelcastInstance.getMap(userMapName);
+    public GetUpdateDeleteDao<UUID, User> userDao(HazelcastInstance hazelcastInstance) {
+        return new UserDao(hazelcastInstance.getMap(userMapName));
     }
+
 }

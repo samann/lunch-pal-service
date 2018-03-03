@@ -1,5 +1,6 @@
 package com.droidwolf.lunchpal.service.rest.client;
 
+import com.droidwolf.lunchpal.service.dao.GetUpdateDeleteDao;
 import com.droidwolf.lunchpal.service.dao.UserDao;
 import com.droidwolf.lunchpal.service.domain.User;
 import com.droidwolf.lunchpal.service.rest.api.UserController;
@@ -18,7 +19,7 @@ public class UserControllerImpl implements UserController {
 
     private static final String USER_NAME_PATH = "/users/{name}";
 
-    private final UserDao userDao;
+    private final GetUpdateDeleteDao<UUID, User> userDao;
 
     public UserControllerImpl(UserDao userDao) {
         this.userDao = userDao;
