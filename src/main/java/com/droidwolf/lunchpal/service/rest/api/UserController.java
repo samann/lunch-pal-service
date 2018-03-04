@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UserController {
 
-    List<User> allUsers();
+    List<User> allUsers(String groupId);
 
     User create(String user);
+
+    User update(String userId, String groupId, String groupDesc);
 
     void delete(String name);
 }
