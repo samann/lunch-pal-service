@@ -2,6 +2,7 @@ package com.droidwolf.lunchpal.service.rest.service;
 
 import com.droidwolf.lunchpal.service.dao.GetUpdateDeleteDao;
 import com.droidwolf.lunchpal.service.domain.User;
+import com.droidwolf.lunchpal.service.protocol.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -38,17 +39,22 @@ public class UserService {
         return user;
     }
 
-    public User updateUserForGroup(String userId, String groupId, String groupDesc) {
+    public User updateUser(String userId, UserDto userDto) {
         User user = ofNullable(getValidId(userId)).map(userDao::get).orElse(null);
         if (user == null) {
             return null;
         }
-        UUID validIdGroupId = getValidId(groupId);
-        if (validIdGroupId == null) {
-            return null;
+
+        String groupDesc = userDto.getGroupDesc();
+        if (groupDesc == null || groupDesc.isEmpty()) {
+            user.setGroupDesc(groupDesc);
         }
-        user.setGroupId(validIdGroupId);
-        user.setGroupDesc(groupDesc);
+
+        String name = userDto.getName();
+        if (name == null || name.isEmpty()) {
+            user.setName(name);
+        }
+
         userDao.save(user.getId(), user);
         return user;
     }
