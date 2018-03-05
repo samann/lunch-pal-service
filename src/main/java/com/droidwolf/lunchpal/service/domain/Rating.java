@@ -1,32 +1,33 @@
 package com.droidwolf.lunchpal.service.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import static java.math.BigDecimal.*;
 import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
 
-public class Rating {
+public class Rating implements Serializable {
     private BigDecimal score;
 
-    private List<User> raters;
+    private Set<User> raters;
 
     public Rating() {
         this.score = ZERO;
-        this.raters = new ArrayList<>();
+        this.raters = new HashSet<>();
     }
 
     public BigDecimal getScore() {
-        return score.divide(valueOf(raters.size()), ROUND_CEILING);
+        return score;
     }
 
-    public BigDecimal incScore(User rater) {
+    public void incScore(User rater) {
         this.raters.add(rater);
-        return score.add(ONE);
+        this.score = score.add(ONE);
     }
 
-    public List<User> getRaters() {
+    public Set<User> getRaters() {
         return raters;
     }
 }

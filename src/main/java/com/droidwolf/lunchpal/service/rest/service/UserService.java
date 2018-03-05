@@ -15,32 +15,32 @@ import static java.util.Optional.ofNullable;
 @Service
 public class UserService {
 
-    private final GetUpdateDeleteDao<UUID, User> userDao;
+    private final GetUpdateDeleteDao<UUID, User> userGetUpdateDeleteDao;
 
-    public UserService(GetUpdateDeleteDao<UUID, User> userDao) {
-        this.userDao = userDao;
+    public UserService(GetUpdateDeleteDao<UUID, User> userGetUpdateDeleteDao) {
+        this.userGetUpdateDeleteDao = userGetUpdateDeleteDao;
     }
 
     public List<User> getAllUsersInGroup(final String groupId) {
-        return ofNullable(getValidId(groupId)).map(id -> userDao.getAll()
+        return ofNullable(getValidId(groupId)).map(id -> userGetUpdateDeleteDao.getAll()
                 .stream()
                 .filter(user -> user.getGroupId().equals(id))
                 .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
 
     public User getUserById(String userId) {
-        return ofNullable(getValidId(userId)).map(userDao::get).orElse(null);
+        return ofNullable(getValidId(userId)).map(userGetUpdateDeleteDao::get).orElse(null);
     }
 
     public User createNewUser(String name) {
         User user = new User(name);
         System.out.println("Created user: " + user.toString());
-        userDao.save(user.getId(), user);
+        userGetUpdateDeleteDao.save(user.getId(), user);
         return user;
     }
 
     public User updateUser(String userId, UserDto userDto) {
-        User user = ofNullable(getValidId(userId)).map(userDao::get).orElse(null);
+        User user = ofNullable(getValidId(userId)).map(userGetUpdateDeleteDao::get).orElse(null);
         if (user == null) {
             return null;
         }
@@ -55,7 +55,7 @@ public class UserService {
             user.setName(name);
         }
 
-        userDao.save(user.getId(), user);
+        userGetUpdateDeleteDao.save(user.getId(), user);
         return user;
     }
 
@@ -65,13 +65,13 @@ public class UserService {
             return null;
         }
 
-        userDao.lock(validUserId);
+        userGetUpdateDeleteDao.lock(validUserId);
 
-        User deletedUser = userDao.remove(validUserId);
+        User deletedUser = userGetUpdateDeleteDao.remove(validUserId);
         String s = deletedUser != null ? "Deleted: " + deletedUser.getName() : "No user found";
         System.out.println(s);
 
-        userDao.unlock(validUserId);
+        userGetUpdateDeleteDao.unlock(validUserId);
 
         return deletedUser;
     }

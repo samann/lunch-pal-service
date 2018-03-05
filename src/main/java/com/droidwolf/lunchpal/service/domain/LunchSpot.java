@@ -1,14 +1,27 @@
 package com.droidwolf.lunchpal.service.domain;
 
-public class LunchSpot {
+import com.droidwolf.lunchpal.service.protocol.LunchSpotDto;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+public class LunchSpot implements Serializable {
+    private final UUID id;
     private String name;
     private String description;
     private Rating rating;
+    private UUID groupId;
 
-    public LunchSpot(String description, String name) {
-        this.description = description;
-        this.name = name;
+    public LunchSpot(LunchSpotDto lunchSpotDto) {
+        this.id = UUID.randomUUID();
+        this.description = lunchSpotDto.getDescription();
+        this.name = lunchSpotDto.getName();
+        this.groupId = lunchSpotDto.getGroupId();
         this.rating = new Rating();
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -33,5 +46,13 @@ public class LunchSpot {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public UUID getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(UUID groupId) {
+        this.groupId = groupId;
     }
 }
