@@ -24,9 +24,13 @@ public class HazelcastConfiguration {
 
     @Bean
     public HazelcastInstance hazelcastInstance() {
-        MapConfig userMapConfig = new MapConfig(userMapName);
         Map<String, MapConfig> mapConfigs = new HashMap<>();
+
+        MapConfig userMapConfig = new MapConfig(userMapName);
         mapConfigs.put(userMapName, userMapConfig);
+
+        MapConfig lunchSpotMapConfig = new MapConfig(lunchSpotMapName);
+        mapConfigs.put(lunchSpotMapName, lunchSpotMapConfig);
 
         Config config = new Config();
         config.setMapConfigs(mapConfigs);
