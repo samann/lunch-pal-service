@@ -7,6 +7,7 @@ import com.droidwolf.lunchpal.service.rest.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,32 +23,32 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping(path = "/groups/{groupId}")
-    public List<User> allUsers(@PathVariable("groupId") String groupId) {
+    public List<User> allUsers(@PathVariable("groupId") UUID groupId) {
         return userService.getAllUsersInGroup(groupId);
     }
 
     @Override
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public User create(@RequestBody UserDto user) {
-        return userService.createNewUser(user.getName());
+        return userService.createNewUser(user);
     }
 
     @Override
     @PutMapping(path = "/{userId}", consumes = APPLICATION_JSON_VALUE)
-    public User update(@PathVariable("userId") String userId, @RequestBody UserDto userDto){
+    public User update(@PathVariable("userId") UUID userId, @RequestBody UserDto userDto){
         User user = userService.updateUser(userId, userDto);
         if (user == null) {
-            System.out.println("Could not update user: " + userId);
+            System.out.println("Could not update user: " + userDto);
         }
         return user;
     }
 
     @Override
     @DeleteMapping(path = "/{userId}")
-    public void delete(@PathVariable("userId") String userId) {
+    public void delete(@PathVariable("userId") UUID userId) {
         User deletedUser = userService.deleteUser(userId);
         if (deletedUser == null) {
-            System.out.println("Could not delete user: " + userId);
+            System.out.println("Could not delete user: " + userId.toString());
         }
     }
 

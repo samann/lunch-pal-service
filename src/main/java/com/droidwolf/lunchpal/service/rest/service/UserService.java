@@ -5,12 +5,9 @@ import com.droidwolf.lunchpal.service.domain.User;
 import com.droidwolf.lunchpal.service.protocol.UserDto;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
 
 @Service
 public class UserService {
@@ -21,71 +18,51 @@ public class UserService {
         this.userGetUpdateDeleteDao = userGetUpdateDeleteDao;
     }
 
-    public List<User> getAllUsersInGroup(final String groupId) {
-        return ofNullable(getValidId(groupId)).map(id -> userGetUpdateDeleteDao.getAll()
+    public List<User> getAllUsersInGroup(final UUID groupId) {
+        return userGetUpdateDeleteDao.getAll()
                 .stream()
-                .filter(user -> user.getGroupId().equals(id))
-                .collect(Collectors.toList())).orElse(Collections.emptyList());
+                .filter(user -> user.getGroupId().equals(groupId))
+                .collect(Collectors.toList());
     }
 
-    public User getUserById(String userId) {
-        return ofNullable(getValidId(userId)).map(userGetUpdateDeleteDao::get).orElse(null);
+    public User getUserById(UUID userId) {
+        return userGetUpdateDeleteDao.get(userId);
     }
 
-    public User createNewUser(String name) {
-        User user = new User(name);
+    public User createNewUser(UserDto userDto) {
+        User user = new User(userDto.getName());
+        user.setGroupDesc(userDto.getGroupDesc());
+        user.setGroupId(userDto.getGroupId());
         System.out.println("Created user: " + user.toString());
         userGetUpdateDeleteDao.save(user.getId(), user);
         return user;
     }
 
-    public User updateUser(String userId, UserDto userDto) {
-        User user = ofNullable(getValidId(userId)).map(userGetUpdateDeleteDao::get).orElse(null);
+    public User updateUser(UUID userId, UserDto userDto) {
+        User user = userGetUpdateDeleteDao.get(userId);
+
         if (user == null) {
             return null;
         }
 
-        String groupDesc = userDto.getGroupDesc();
-        if (groupDesc == null || groupDesc.isEmpty()) {
-            user.setGroupDesc(groupDesc);
-        }
-
-        String name = userDto.getName();
-        if (name == null || name.isEmpty()) {
-            user.setName(name);
-        }
+        user.setGroupDesc(userDto.getGroupDesc());
+        user.setName(userDto.getName());
 
         userGetUpdateDeleteDao.save(user.getId(), user);
         return user;
     }
 
-    public User deleteUser(String userId) {
-        UUID validUserId = getValidId(userId);
-        if (validUserId == null) {
-            return null;
-        }
+    public User deleteUser(final UUID userId) {
 
-        userGetUpdateDeleteDao.lock(validUserId);
+        userGetUpdateDeleteDao.lock(userId);
 
-        User deletedUser = userGetUpdateDeleteDao.remove(validUserId);
+        User deletedUser = userGetUpdateDeleteDao.remove(userId);
         String s = deletedUser != null ? "Deleted: " + deletedUser.getName() : "No user found";
         System.out.println(s);
 
-        userGetUpdateDeleteDao.unlock(validUserId);
+        userGetUpdateDeleteDao.unlock(userId);
 
         return deletedUser;
     }
 
-    private UUID getValidId(String id) {
-        if (id == null || id.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return UUID.fromString(id);
-        } catch (IllegalArgumentException e) {
-
-            return null;
-        }
-    }
 }
